@@ -1,0 +1,18 @@
+version: '3'
+services:
+  liberty:
+    build: liberty
+    ports:
+      - "9080:9080"
+      - "443:443"
+#    environment:
+#    depends_on: 
+    volumes:
+      - ./trace/liberty/logs:/logs
+
+#  db2:
+#    build: db2
+#    ports:
+#      - "50000:50000"
+#    environment:
+#    privileged: True

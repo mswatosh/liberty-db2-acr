@@ -1,0 +1,76 @@
+apply plugin: 'war'
+apply plugin: 'ear'
+apply plugin: 'liberty'
+group = 'com.example.liberty.db2'
+version = '1.0-SNAPSHOT'
+description = "Db2 App for Liberty"
+buildDir = 'liberty/build'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.6.3'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile group:'javax.servlet', name:'javax.servlet-api', version:'4.0.1'
+    providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '2.0'
+    providedCompile group: 'javax.security.enterprise', name: 'javax.security.enterprise-api', version: '1.0'
+    providedCompile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.3'
+    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3'
+    testCompile group:'commons-httpclient', name:'commons-httpclient', version:'3.1'
+    testCompile group:'junit', name:'junit', version:'4.12'
+    libertyRuntime group:'io.openliberty', name:'openliberty-runtime', version:'[17.0.0.4,)'
+    runtime group: 'com.ibm.db2.jcc', name: 'db2jcc', version: 'db2jcc4'
+}
+
+task copyDependenciesLiberty(type: Copy) {
+   from configurations.runtime
+   include 'db2jcc*'
+   rename 'db2jcc(.*)', 'db2jcc.jar'
+   into 'liberty/build/dependencies'
+}
+
+ext {
+    appName = project.name
+    testServerHttpPort = 9080
+    testServerHttpsPort = 9443
+    warContext = appName
+}
+
+liberty {
+    server {
+        name = "defaultServer"
+        looseApplication = false
+
+        configFile = file("liberty/server.xml")
+
+        bootstrapProperties = ['default.http.port': testServerHttpPort,
+                               'default.https.port': testServerHttpsPort,
+                               'app.context.root': warContext]
+
+        packageLiberty {
+            archive = "$buildDir/${appName}.zip"
+            include = "usr"
+        }
+    }
+}
+
+
+war {
+    from (sourceSets.main.output) {
+        archiveName = "${baseName}.${extension}"
+    }
+}
+
+clean.dependsOn 'libertyStop'
+libertyPackage.dependsOn 'libertyStop'
+libertyPackage.dependsOn 'copyDependenciesLiberty'
