@@ -10,9 +10,9 @@ services:
     volumes:
       - ./trace/liberty/logs:/logs
 
-#  db2:
-#    build: db2
-#    ports:
-#      - "50000:50000"
+  db2:
+    build: db2
+    ports:
+      - "50000:50000"
 #    environment:
-#    privileged: True
+    privileged: True
