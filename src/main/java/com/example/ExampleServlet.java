@@ -36,8 +36,9 @@ public class ExampleServlet extends HttpServlet {
             DatabaseMetaData dbmd = ds.getConnection().getMetaData();
             pw.println("URL:" + dbmd.getURL());
         } catch (SQLException e) {
-            pw.println("SQLState: " + e.getSQLState());
-            pw.println("SQLCode: " + e.getErrorCode());
+            pw.println("SQLState: " + e.getSQLState() + "\n");
+            pw.println("SQLCode: " + e.getErrorCode() + "\n");
+            e.printStackTrace(pw);
         }
         
 

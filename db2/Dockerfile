@@ -1,4 +1,4 @@
-FROM ibmcom/db2
+FROM --platform=linux/amd64 ibmcom/db2 
 
 ADD docker-entrypoint.sh /
 RUN chmod a+x /docker-entrypoint.sh

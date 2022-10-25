@@ -5,14 +5,16 @@ services:
     ports:
       - "9080:9080"
       - "443:443"
-#    environment:
-#    depends_on: 
     volumes:
       - ./trace/liberty/logs:/logs
+    platform: linux/amd64
 
-  db2:
+#  db2a:
+#    build: db2
+#    privileged: True
+#    platform: linux/amd64
+
+  db2b:
     build: db2
-    ports:
-      - "50000:50000"
-#    environment:
     privileged: True
+    platform: linux/amd64
