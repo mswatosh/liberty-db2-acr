@@ -1,0 +1,22 @@
+version: '3'
+services:
+  liberty:
+    build:
+      context: liberty
+      dockerfile: ca.Dockerfile
+    ports:
+      - "9080:9080"
+      - "443:443"
+    volumes:
+      - ./trace/liberty/logs:/logs
+    platform: linux/amd64
+
+  db2a:
+    build: db2
+    privileged: True
+    platform: linux/amd64
+
+  db2b:
+    build: db2
+    privileged: True
+    platform: linux/amd64
