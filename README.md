@@ -1,7 +1,12 @@
 # Db2 failover options using Liberty
 This is a collection of Docker environments demonstrating Db2 failover options with Liberty. It consists of a simple Servlet application which returns the JDBC url of the database it's connection points to, and a pair of Db2 containers for failover.
 
-## Db2 Client Reroute
+## Reroute Options
+- Db2 Client Reroute (client config)  
+- Db2 Client Reroute (server config) - Not demonstrated  
+- Db2 Client Affinities  
+- Db2 HADR - Not demonstrated  
+## Db2 Client Reroute 
 
 Db2 client reroute is the simplest failover option, allowing rerouting to occur only on the first connection request.
 1. Build the application and start the containers  
